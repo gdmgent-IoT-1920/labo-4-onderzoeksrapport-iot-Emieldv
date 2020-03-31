@@ -58,9 +58,27 @@ Bij het toewijzen van een conceptueel gegevensmodel naar een netwerkgegevensmode
 
 #### - Maak een netwerkgegevensmodel op basis van gerelateerde gegevens en bezorgingskenmerken
 
+Om toekomstige schaalbaarheid en prestaties te garanderen, moet een architect, zoals gezegd, gegevensitems groeperen die logisch gerelateerd zijn en vergelijkbare leveringskenmerken hebben in een netwerkdatamodel.
+
+Er doen zich problemen voor wanneer architecten of ontwikkelaars niet over het gegevensmodel hebben nagedacht, maar in plaats daarvan alles in één gegevensstroom hebben gestopt. In het vrachtwagenvoorbeeld zou dit betekenen dat alle vrachtwagengegevens tegelijkertijd zouden worden verzonden - het oliepeil, het manifest, onderhoudsinformatie en alle andere vrachtwagengegevens zouden worden verzonden met de hoge snelheid van de GPS-informatie. Dit kan werken met een beperkte hoeveelheid gegevens, maar zelfs op kleine schaal gebruikt het onnodige bandbreedte en CPU-capaciteit. In een systeem met meer data wordt dit onwerkbaar. Door Best Practice # 1 vooraf uit te voeren, kan de architect schaalbaarheid en prestatieproblemen langs de lijn voorkomen
+
 #### - gebruik getypte data
 
+Gegevens een daadwerkelijke structuur of type geven, in plaats van binaire gegevens over het netwerk te verzenden (tenzij het in feite binaire gegevens zijn, zoals afbeeldingen en video's), kan zeer nuttig zijn. Een reden hiervoor is dat de middleware de detectie en distributie van type-informatie gaat verwerken.
+
+Met getypte gegevens kan men automatisch andere applicaties en diensten aansluiten, zoals datavisualisatie-tools of gedistribueerde logging-tools. Hierdoor kunnen ontwikkelaars en systeemintegrators COTS of op maat gemaakte tools aansluiten om gegevens te visualiseren, gegevens op te nemen, realtime gegevens te vertalen naar een relationele database of om aanvullende functies uit te voeren op de gegevens die niet van tevoren bekend zijn.
+
+Wanneer applicaties getypte gegevens gebruiken, maakt het ook mogelijkheden mogelijk die verder gaan dan wat oorspronkelijk was ontworpen. Er kunnen nieuwe applicaties worden ontwikkeld die gegevens choreograferen, aggregeren, splitsen of bemiddelen zonder dat u zich zorgen hoeft te maken over details op protocolniveau. Hierdoor kunnen gegevens op redelijke en goed georganiseerde manieren worden gewijzigd en kunnen systemen gracieus worden onderhouden en geüpgraded.
+
+Als een applicatie daarentegen is ontworpen met gegevens die ondoorzichtig zijn voor de middleware, moet de applicatieontwikkelaar de logica schrijven om de gegevens van en naar een netwerkformulier te converteren, de vereiste programmeertalen te ondersteunen en om met het eindbestaan ​​om te gaan. Dit voegt extra logica toe die moet worden getest en onderhouden. Bovendien voorkomt dit dat COTS-tools interactie hebben met de gegevens. Dit kan uiteindelijk de kosten van het ontwikkelen en upgraden van het systeem verhogen.
+
 #### - Gebruik keyed data
+
+Als meerdere real-world objecten in een systeem worden weergegeven, moet de systeemarchitect sleutelvelden gebruiken om de middleware te informeren wat die objecten zijn. Sleutelvelden zijn velden in uw gegevenstype die een unieke identificatie vormen van een real-world object. Als gegevens zijn gecodeerd, zal de middleware herkennen dat elke unieke waarde van sleutelvelden een uniek real-world object vertegenwoordigtAls meerdere real-world objecten in een systeem worden weergegeven, moet de systeemarchitect sleutelvelden gebruiken om de middleware te informeren wat die objecten zijn. Sleutelvelden zijn velden in uw gegevenstype die een unieke identificatie vormen van een real-world object. Als gegevens zijn gecodeerd, zal de middleware herkennen dat elke unieke waarde van sleutelvelden een uniek real-world object vertegenwoordigt
+
+Het eerste voordeel van de middleware te laten weten dat er unieke objecten in de gegevensstroom zijn, is dat deze informatie over de levenscyclus van bijvoorbeeld objecten kan bijhouden. Het kan ook levenscyclusinformatie bijhouden over de vraag of deze instantie al dan niet in leven is.
+
+als de systeemarchitect de te versleutelen gegevens niet ontwerpt, zal de middleware niet begrijpen dat er meerdere objecten worden weergegeven. Dit leidt de applicatieontwikkelaar ertoe logica te schrijven die dupliceert wat er al in de middleware zit om levenscycli van objecten te detecteren, vertraagde updates van objecten te detecteren en om failover tussen updates over een object te bieden. Als de middleware niet weet dat de applicatie meerdere objecten vertegenwoordigt, kan deze bovendien geen afzonderlijke logische wachtrij per object aanhouden. Dit zorgt ervoor dat de applicatie langere wachtrijen heeft om ervoor te zorgen dat updates niet verloren gaan voor een bepaald object.
 
 ## Waar gebruiken ze DDS?
 
